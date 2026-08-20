@@ -1,0 +1,20 @@
+# ===== 敏感信息：绝不提交 =====
+.env
+*.env
+!*.env.example
+
+# ===== 运行时数据 =====
+data/content/
+data/drafts/
+data/monitor/
+data/reports/
+data/plans/
+data/state.json
+logs/
+results/
+backups/
+__pycache__/
+*.pyc
+
+# ===== 系统文件 =====
+.DS_Store

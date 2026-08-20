@@ -1,0 +1,27 @@
+# robots.txt — 允许所有 AI/搜索引擎爬虫抓取
+User-agent: *
+Allow: /
+
+# 明确允许主流 AI 引擎爬虫（GEO 关键：确保这些 UA 不被屏蔽）
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://dangweilong.com/sitemap.xml
