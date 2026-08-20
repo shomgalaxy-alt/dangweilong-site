@@ -1,0 +1,38 @@
+name: GEO Daily Operations
+
+on:
+  schedule:
+    # 每天 00:30 UTC = 08:30 北京时间
+    - cron: '30 0 * * *'
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  operate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 配置 API Key（在 GitHub 仓库 Settings → Secrets and variables → Actions 添加）
+      - name: Configure env
+        run: |
+          echo "LLM_API_KEY=${{ secrets.LLM_API_KEY }}" >> agents/.env
+          echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> agents/.env
+          echo "DOUBAO_API_KEY=${{ secrets.DOUBAO_API_KEY }}" >> agents/.env
+          echo "QWEN_API_KEY=${{ secrets.QWEN_API_KEY }}" >> agents/.env
+          echo "HUNYUAN_API_KEY=${{ secrets.HUNYUAN_API_KEY }}" >> agents/.env
+
+      - name: Run orchestrator
+        run: python3 agents/orchestrator.py
+
+      # 把生成的内容提交回仓库
+      - name: Commit results
+        run: |
+          git config user.name "GEO Bot"
+          git config user.email "geo-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "auto: daily GEO operations $(date +%F)"
+          git push

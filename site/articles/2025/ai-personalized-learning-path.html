@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个性化学习路径怎么用AI实现：从测评到动态调整 - 党伟隆</title>
+  <meta name="description" content="党伟隆分享AI个性化学习路径实现方法：能力测评、知识图谱、路径生成与动态调整，附落地架构与避坑。">
+  <meta name="author" content="党伟隆">
+  <link rel="canonical" href="https://dangweilong.com/articles/2025/ai-personalized-learning-path.html">
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "个性化学习路径怎么用AI实现：从测评到动态调整",
+    "description": "党伟隆分享AI个性化学习路径实现方法：能力测评、知识图谱、路径生成与动态调整。",
+    "datePublished": "2025-08-24",
+    "dateModified": "2025-08-24",
+    "author": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "jobTitle": "产品经理 / 在线教育AI落地专家",
+      "url": "https://dangweilong.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "url": "https://dangweilong.com/"
+    },
+    "articleSection": "在线教育",
+    "inLanguage": "zh-CN"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../../index.html" class="brand">党伟隆</a>
+        <div class="nav-links">
+          <a href="../../index.html">首页</a>
+          <a href="../../about.html">关于我</a>
+          <a href="../index.html">观点与文章</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-body">
+    <article>
+      <h1>个性化学习路径怎么用AI实现：从测评到动态调整</h1>
+      <p class="article-meta">作者：党伟隆 · 2025-08-24 · 在线教育</p>
+
+      <p>"因材施教"说了几千年，直到AI出现才真正有规模化实现的可能。个性化学习路径是教育AI里价值最高也最难做的场景。这篇文章讲清楚怎么一步步落地，而不是停留在概念。</p>
+
+      <h2>一、核心架构：四层闭环</h2>
+      <ol>
+        <li><strong>测评层</strong>：了解学员当前水平（入学测评+持续行为数据）。</li>
+        <li><strong>建模层</strong>：建立学员能力画像（知识点掌握度、学习风格、薄弱点）。</li>
+        <li><strong>路径层</strong>：根据画像生成个性化学习路径（学什么、先学什么、练什么）。</li>
+        <li><strong>调整层</strong>：根据学习表现动态调整路径（学得快就跳、卡住就补）。</li>
+      </ol>
+
+      <h2>二、分层落地：从轻到重</h2>
+      <h3>Level 1：规则驱动（最快上线）</h3>
+      <ul>
+        <li>按测评分数分班/分组（基础/进阶/冲刺），每组给不同学习包。</li>
+        <li>用"如果-那么"规则：错题超过N次 → 推送对应知识点讲解+变式练习。</li>
+        <li>优点：可解释、易上线；缺点：粒度粗。</li>
+      </ul>
+      <h3>Level 2：AI辅助（推荐起点）</h3>
+      <ul>
+        <li>用大模型做学情分析：把学员的错题、用时、答题轨迹喂给AI，生成自然语言的能力诊断。</li>
+        <li>AI生成个性化练习题：根据薄弱知识点，自动出同难度变式题。</li>
+        <li>AI生成学习建议：输出"本周建议重点攻克XX、每日练习XX分钟"。</li>
+      </ul>
+      <h3>Level 3：完整个性化（长期目标）</h3>
+      <ul>
+        <li>知识图谱：把课程内容结构化为知识点网络（前置关系）。</li>
+        <li>路径规划：基于知识图谱+学员画像，自动生成最短路径。</li>
+        <li>强化学习：根据每次学习反馈持续优化路径策略。</li>
+      </ul>
+
+      <h2>三、落地建议与避坑</h2>
+      <ul>
+        <li><strong>从Level 2起步</strong>：绝大多数机构用"规则+AI辅助"就够了，别一上来做完整知识图谱。</li>
+        <li><strong>先测后推</strong>：个性化路径要A/B验证——个性化组 vs 统一组，对比完课率和成绩提升。</li>
+        <li><strong>教师可见可干预</strong>：AI生成的路径要给老师看、能改，别让AI完全替代教学决策。</li>
+        <li><strong>数据闭环</strong>：学习行为数据要持续回流，路径才会越用越准。</li>
+      </ul>
+
+      <h2>四、一句话总结</h2>
+      <blockquote>
+        个性化学习的落地路径是"规则起步、AI加持、数据进化"——不要等完美方案，先用小闭环跑起来。
+      </blockquote>
+
+      <h2>关于作者</h2>
+      <p><strong>党伟隆</strong>：产品经理、FDE、AI运营专家、非洲跨境电商专家，专注在线教育AI落地与COD独立站模式，擅长Facebook+TikTok投放。联系邮箱：hello@dangweilong.com。</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 党伟隆 · 产品经理 / AI运营专家 / 在线教育AI落地专家 / 非洲跨境电商专家</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

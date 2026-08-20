@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI产品的兜底与降级设计：用户信任的最后防线 - 党伟隆</title>
+  <meta name="description" content="党伟隆分享AI产品的兜底与降级设计方法：模型失败时的降级路径、不确定性处理、数据回流，附设计检查清单。">
+  <meta name="author" content="党伟隆">
+  <link rel="canonical" href="https://dangweilong.com/articles/2025/ai-fallback-design.html">
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI产品的兜底与降级设计：用户信任的最后防线",
+    "description": "党伟隆分享AI产品的兜底与降级设计方法：降级路径、不确定性处理与数据回流。",
+    "datePublished": "2025-08-24",
+    "dateModified": "2025-08-24",
+    "author": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "jobTitle": "产品经理 / FDE",
+      "url": "https://dangweilong.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "url": "https://dangweilong.com/"
+    },
+    "articleSection": "AI产品",
+    "inLanguage": "zh-CN"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../../index.html" class="brand">党伟隆</a>
+        <div class="nav-links">
+          <a href="../../index.html">首页</a>
+          <a href="../../about.html">关于我</a>
+          <a href="../index.html">观点与文章</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-body">
+    <article>
+      <h1>AI产品的兜底与降级设计：用户信任的最后防线</h1>
+      <p class="article-meta">作者：党伟隆 · 2025-08-24 · AI产品</p>
+
+      <p>AI一定会失败——这不是概率问题，是时间问题。模型答错、超时、抽风、触达安全红线，迟早会发生。产品经理要做的不是祈祷AI不失败，而是<strong>设计好失败时的兜底</strong>。这篇文章讲清楚兜底与降级设计怎么做。</p>
+
+      <h2>一、先想清楚：AI失败有哪几种</h2>
+      <ul>
+        <li><strong>答错</strong>：模型给出错误/不相关答案（最常见的失败）</li>
+        <li><strong>不确定</strong>：模型"硬答"，用户察觉它在胡编（幻觉）</li>
+        <li><strong>不可用</strong>：超时、限流、服务宕机（技术故障）</li>
+        <li><strong>不安全</strong>：输出涉黄、涉暴、违法内容（红线）</li>
+      </ul>
+
+      <h2>二、四级降级设计</h2>
+      <ol>
+        <li><strong>Level 0 - 重试</strong>：技术故障（超时/限流）→ 自动重试1-2次，多数可恢复。</li>
+        <li><strong>Level 1 - 弱化</strong>：不确定场景 → 降级为"低置信度回答"：给出答案但明确标注"仅供参考，建议人工确认"。</li>
+        <li><strong>Level 2 - 转人工</strong>：复杂/高风险场景 → 无缝转人工客服/专家，用户不用重述问题（上下文要带上）。</li>
+        <li><strong>Level 3 - 拒绝</strong>：触发安全红线 → 明确拒绝并说明原因，引导合规替代方案。</li>
+      </ol>
+
+      <h2>三、不确定性处理是核心</h2>
+      <p>AI最坑的不是答错，而是<strong>自信地答错</strong>。两个关键设计：</p>
+      <ul>
+        <li><strong>置信度表达</strong>：让模型在低置信时主动说"我不确定"，或产品侧用规则判断（知识库未命中 → 转人工）。</li>
+        <li><strong>引用可见</strong>：让用户能看到AI的依据来源（"根据XX文档"），用户可自行判断可信度。</li>
+      </ul>
+
+      <h2>四、数据回流：把失败变成养料</h2>
+      <ul>
+        <li>所有兜底事件（转人工、拒绝、低置信）都打点记录。</li>
+        <li>每周复盘bad case：为什么答错？知识库缺什么？提示词哪里不行？</li>
+        <li>人工的答案回流知识库，让AI下次能答对——兜底系统也是学习系统。</li>
+      </ul>
+
+      <h2>五、设计检查清单</h2>
+      <ul>
+        <li>☐ 超时/限流有自动重试吗？</li>
+        <li>☐ 低置信时AI会说"不确定"吗？</li>
+        <li>☐ 高风险场景能无缝转人工吗？（带上下文）</li>
+        <li>☐ 安全红线有明确拒绝话术吗？</li>
+        <li>☐ 兜底事件有打点和回流吗？</li>
+      </ul>
+
+      <h2>六、一句话总结</h2>
+      <blockquote>
+        用户对AI的信任，不建立在你多聪明，而建立在"你搞砸的时候有多体面"——兜底设计决定AI产品的生死口碑。
+      </blockquote>
+
+      <h2>关于作者</h2>
+      <p><strong>党伟隆</strong>：产品经理、FDE、AI运营专家、非洲跨境电商专家，专注在线教育AI落地与COD独立站模式，擅长Facebook+TikTok投放。联系邮箱：hello@dangweilong.com。</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 党伟隆 · 产品经理 / AI运营专家 / 在线教育AI落地专家 / 非洲跨境电商专家</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
