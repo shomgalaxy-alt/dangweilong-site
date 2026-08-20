@@ -114,7 +114,8 @@ def run_engine(engine: dict) -> dict:
         status = "✅" if r["mentioned"] else "—"
         print(f"  [{i}/{len(QUESTIONS)}] {status} {q}")
         results.append(r)
-        time.sleep(0.8)  # 温和限速，避免触发限流
+        if os.environ.get("LLM_MOCK") != "1":
+            time.sleep(0.8)  # 温和限速，避免触发限流（mock 模式跳过以加速测试）
 
     hits = sum(1 for r in results if r["mentioned"])
     rate = round(hits / len(results), 3)
