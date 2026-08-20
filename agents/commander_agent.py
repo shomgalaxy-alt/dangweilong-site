@@ -102,14 +102,17 @@ def format_situation(sit: dict) -> str:
     lines = [
         f"今天是 {sit['date']}（周{sit['weekday']}）",
         "",
-        "【最近 AI 可见度监控趋势】（date: hits/total）",
+        "【最近 AI 可见度监控趋势】",
     ]
     if sit["monitor_trend"]:
         for t in sit["monitor_trend"]:
-            lines.append(
-                f"- {t.get('date')}: 命中 {t.get('hits')}/{t.get('total', 6)} "
-                f"({t.get('hit_rate', 0)*100:.0f}%)"
-            )
+            rate = t.get("overall_rate", 0)
+            engines = t.get("engines", [])
+            engine_desc = ", ".join(
+                f"{e.get('name', e.get('app', '?'))}:{e.get('hit_rate', 0)*100:.0f}%"
+                for e in engines
+            ) or "无引擎数据"
+            lines.append(f"- {t.get('date')}: 综合 {rate*100:.0f}% | {engine_desc}")
     else:
         lines.append("- 暂无监控数据（可能是系统刚部署）")
 
