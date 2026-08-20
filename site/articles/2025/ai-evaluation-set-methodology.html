@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>如何给AI产品建立评估集：评测方法论与实操 - 党伟隆</title>
+  <meta name="description" content="党伟隆分享AI产品评估集建立方法：评估集设计、标注规范、评测流程与迭代机制，附评估集模板。">
+  <meta name="author" content="党伟隆">
+  <link rel="canonical" href="https://dangweilong.com/articles/2025/ai-evaluation-set-methodology.html">
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "如何给AI产品建立评估集：评测方法论与实操",
+    "description": "党伟隆分享AI产品评估集建立方法：评估集设计、标注规范、评测流程与迭代机制。",
+    "datePublished": "2025-08-27",
+    "dateModified": "2025-08-27",
+    "author": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "jobTitle": "产品经理 / FDE",
+      "url": "https://dangweilong.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "党伟隆",
+      "url": "https://dangweilong.com/"
+    },
+    "articleSection": "AI产品",
+    "inLanguage": "zh-CN"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../../index.html" class="brand">党伟隆</a>
+        <div class="nav-links">
+          <a href="../../index.html">首页</a>
+          <a href="../../about.html">关于我</a>
+          <a href="../index.html">观点与文章</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-body">
+    <article>
+      <h1>如何给AI产品建立评估集：评测方法论与实操</h1>
+      <p class="article-meta">作者：党伟隆 · 2025-08-27 · AI产品</p>
+
+      <p>没有评估集的AI产品，就像没有测试用例的软件——每次改动Prompt、换模型、调知识库，都靠"感觉"判断好坏。评估集是AI产品迭代的地基。这篇文章讲清楚怎么从零建一个能用的评估集。</p>
+
+      <h2>一、评估集是什么、解决什么问题</h2>
+      <p>评估集是一组"输入-期望输出"的测试用例集合，用来量化回答"这次改动后，AI变好了还是变差了"。它解决三个问题：</p>
+      <ul>
+        <li>改动有依据：Prompt改完，分数涨了没？</li>
+        <li>回归有防线：换模型后，之前好的场景有没有变差？</li>
+        <li>上线有门槛：达到什么分数才允许上线？</li>
+      </ul>
+
+      <h2>二、评估集设计（小而代表）</h2>
+      <ol>
+        <li><strong>覆盖维度</strong>：常见case（60%）+ 疑难case（25%）+ 边界case（15%）。</li>
+        <li><strong>数量起点</strong>：50-100条足够起步，重点是"代表真实业务"，不是"多"。</li>
+        <li><strong>来源</strong>：真实用户问题（首选）+ 业务人员补充 + AI生成人工审核。</li>
+        <li><strong>标注规范</strong>：每条标"好/中/差"+ 期望要点（如"必须提到退货政策"）。</li>
+      </ol>
+
+      <h2>三、评测流程</h2>
+      <ul>
+        <li><strong>批量跑</strong>：每次改动，把评估集整体跑一遍，记录每条的得分。</li>
+        <li><strong>算指标</strong>：整体得分率、分类得分（常见/疑难/边界分开看）。</li>
+        <li><strong>看diff</strong>：对比改动前后的得分，重点看"哪些场景变好、哪些变差"。</li>
+        <li><strong>人工抽检</strong>：AI自动评分之外，每周人工抽检10条，校准评分标准。</li>
+      </ul>
+
+      <h2>四、评估集要持续进化</h2>
+      <ul>
+        <li>线上bad case持续补充进评估集（AI答错的真实案例）。</li>
+        <li>业务变化（新课程/新政策/新品）及时更新期望输出。</li>
+        <li>评估集本身也要版本管理——别让"变好"的判定标准漂移。</li>
+      </ul>
+
+      <h2>五、一句话总结</h2>
+      <blockquote>
+        评估集不是评测部门的工具，是AI产品经理的"仪表盘"——没有它，你的每次AI改动都是在盲飞。
+      </blockquote>
+
+      <h2>关于作者</h2>
+      <p><strong>党伟隆</strong>：产品经理、FDE、AI运营专家、非洲跨境电商专家，专注在线教育AI落地与COD独立站模式，擅长Facebook+TikTok投放。联系邮箱：hello@dangweilong.com。</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 党伟隆 · 产品经理 / AI运营专家 / 在线教育AI落地专家 / 非洲跨境电商专家</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
