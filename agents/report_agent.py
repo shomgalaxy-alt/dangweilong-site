@@ -76,6 +76,7 @@ def collect_monitor_stats(days: list) -> dict:
         "latest_rate": latest.get("overall_rate", 0),
         "latest_date": latest["date"],
         "engine_stats": engine_stats,
+        "series": [{"date": r["date"], "rate": r.get("overall_rate", 0)} for r in records],
     }
 
 
@@ -136,6 +137,48 @@ def render_report(end_date: datetime.date) -> str:
     engine_rows = ""
     for app, st in monitor["engine_stats"].items():
         bar_w = max(int(st["hit_rate"] * 100), 2)
+
+    # 命中率趋势折线图（内联 SVG，无外部依赖）
+    series = monitor.get("series", [])
+    svg_chart = ""
+    if len(series) >= 2:
+        W, H = 600, 160
+        pad_l, pad_r, pad_t, pad_b = 30, 10, 12, 24
+        plot_w, plot_h = W - pad_l - pad_r, H - pad_t - pad_b
+        max_rate = max(max(s["rate"] for s in series), 0.1)
+        def px(s):
+            x = pad_l + (s["rate"] / max_rate) * plot_w
+            y = pad_t + plot_h - (s["rate"] / max_rate) * plot_h
+            return x, y
+        points = " ".join(f"{px(s)[0]:.1f},{px(s)[1]:.1f}" for s in series)
+        # 网格线（0%, 50%, 100%）
+        grid = ""
+        for g in (0.0, 0.5, 1.0):
+            gy = pad_t + plot_h - g * plot_h
+            grid += f'<line x1="{pad_l}" y1="{gy:.1f}" x2="{W-pad_r}" y2="{gy:.1f}" stroke="#eef2f7" stroke-width="1"/>'
+            grid += f'<text x="{pad_l-6}" y="{gy+4:.1f}" font-size="10" fill="#9ca3af" text-anchor="end">{int(g*100)}%</text>'
+        # 数据点
+        dots = ""
+        for s in series:
+            x, y = px(s)
+            dots += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="#2563eb"/>'
+        # 日期标签（首尾 + 中间）
+        labels = ""
+        step = max(1, len(series) - 1)
+        for i in (0, step // 2, step):
+            s = series[i]
+            x, y = px(s)
+            labels += f'<text x="{x:.1f}" y="{H-8}" font-size="9" fill="#9ca3af" text-anchor="middle">{s["date"][5:]}</text>'
+        svg_chart = f'''<svg viewBox="0 0 {W} {H}" style="max-width:100%;height:auto;background:#fff;border-radius:12px;">
+  {grid}
+  <polyline points="{points}" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  {dots}
+  {labels}
+</svg>'''
+    elif len(series) == 1:
+        svg_chart = f'<p class="sub">已记录 {len(series)} 次监控（{series[0]["date"]}，综合命中率 {series[0]["rate"]*100:.0f}%），持续运行后将生成趋势图</p>'
+    else:
+        svg_chart = '<p class="sub">暂无监控数据，配置 API Key 后自动生成趋势图</p>'
         engine_rows += (
             f"<tr><td>{html.escape(st['name'])}</td>"
             f"<td>{st['hit_rate']*100:.0f}% ({st['hits']}/{st['total']})</td>"
@@ -191,6 +234,9 @@ def render_report(end_date: datetime.date) -> str:
     <li>本周最好综合命中率 {monitor['best_rate']*100:.0f}%{('（' + monitor['latest_date'] + '）') if monitor['latest_date'] else ''}</li>
     <li>平台草稿 {drafts} 份已生成（知乎/公众号/小红书）</li>
   </ul>
+
+  <h2>📈 综合命中率趋势</h2>
+  {svg_chart}
 
   <h2>🤖 分引擎 AI 可见度（最近一次）</h2>
   <table>
