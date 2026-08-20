@@ -208,12 +208,16 @@ def publish_article_to_site(md_path: Path):
 
 
 def update_article_list(url: str, title: str, date_str: str):
-    """在 www/articles/index.html 列表顶部插入新文章条目。"""
+    """在 www/articles/index.html 列表顶部插入新文章条目（幂等：已存在则跳过）。"""
     list_file = config.WWW_DIR / "articles" / "index.html"
     if not list_file.exists():
         print("  ⚠ 找不到文章列表页，跳过列表更新")
         return
     text = list_file.read_text(encoding="utf-8")
+    # 幂等检查：该 URL 已存在则不重复插入
+    if f'href="{url}"' in text:
+        print("  ℹ 文章已在列表中，跳过（幂等）")
+        return
     item = (
         f'<div class="article-item">\n'
         f'            <h3><a href="{url}">{html.escape(title)}</a></h3>\n'
@@ -230,11 +234,14 @@ def update_article_list(url: str, title: str, date_str: str):
 
 
 def update_sitemap(url: str, date_str: str):
-    """向 www/sitemap.xml 追加新 URL 条目。"""
+    """向 www/sitemap.xml 追加新 URL 条目（幂等：已存在则跳过）。"""
     sitemap = config.WWW_DIR / "sitemap.xml"
     if not sitemap.exists():
         return
     text = sitemap.read_text(encoding="utf-8")
+    if f"<loc>https://dangweilong.com{url}</loc>" in text:
+        print("  ℹ sitemap 已有该条目，跳过（幂等）")
+        return
     entry = (
         f'  <url>\n'
         f'    <loc>https://dangweilong.com{url}</loc>\n'
