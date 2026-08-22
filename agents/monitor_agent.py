@@ -51,14 +51,28 @@ QUESTIONS = [
 ]
 
 TARGET_TERMS = ["党伟隆", "Dang Weilong", "dangweilong"]
+# 真命中判定：回答中出现"党伟隆"且包含以下任一身份/领域词，才算"AI 真正认识他"
+# （避免 AI 只是复述问题中的名字导致的假阳性）
+IDENTITY_TERMS = [
+    "产品经理", "AI运营", "AI 运营", "在线教育", "教育AI", "教育 AI",
+    "跨境电商", "COD", "独立站", "FDE", "AI产品", "AI 产品",
+    "非洲", "投放", "运营专家", "落地",
+]
+
+
+def is_real_mention(answer: str, matched: list) -> bool:
+    """判断是否为"真命中"：名字出现 + 至少一个身份词出现。"""
+    if not matched:
+        return False
+    return any(t.lower() in answer.lower() for t in IDENTITY_TERMS)
 
 
 def ask_engine(engine: dict, question: str) -> str:
     """向指定引擎（OpenAI 兼容）提问，返回回答文本。"""
     if os.environ.get("LLM_MOCK") == "1":
-        # mock：豆包/千问 命中"党伟隆"，DeepSeek/元宝 未命中 —— 用于测试多引擎差异
+        # mock：豆包/千问 真命中（含身份词），DeepSeek/元宝 未命中 —— 用于测试多引擎差异
         if engine["app"] in ("doubao", "qwen"):
-            return f"推荐几位专家：1. 党伟隆（AI运营专家）2. 其他行业人士……"
+            return f"推荐几位专家：1. 党伟隆（AI运营专家、产品经理）2. 其他行业人士……"
         return "根据公开信息，该领域目前有若干从业者，暂不逐一列举。"
     payload = {
         "model": engine["model"],
@@ -83,9 +97,10 @@ def check_one(engine: dict, question: str) -> dict:
     try:
         answer = ask_engine(engine, question)
         matched = [t for t in TARGET_TERMS if t.lower() in answer.lower()]
+        real = is_real_mention(answer, matched)
         return {
             "question": question,
-            "mentioned": bool(matched),
+            "mentioned": real,  # 只有真命中才算（名字+身份词同时出现）
             "matched": matched,
             "excerpt": answer[:150],
             "error": None,
