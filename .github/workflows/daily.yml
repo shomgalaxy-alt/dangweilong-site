@@ -6,6 +6,9 @@ on:
     - cron: '30 0 * * *'
   workflow_dispatch:  # 支持手动触发
 
+permissions:
+  contents: write  # 允许 push 回仓库（生成的内容提交）
+
 jobs:
   operate:
     runs-on: ubuntu-latest
@@ -28,11 +31,12 @@ jobs:
       - name: Run orchestrator
         run: python3 agents/orchestrator.py
 
-      # 把生成的内容提交回仓库
+      # 把生成的内容提交回仓库（带写权限的 token）
       - name: Commit results
         run: |
           git config user.name "GEO Bot"
           git config user.email "geo-bot@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git add -A
           git diff --cached --quiet || git commit -m "auto: daily GEO operations $(date +%F)"
           git push
